@@ -59,22 +59,24 @@ This is intentionally **measure-free** notation — accuracy matters, not rhythm
 
 ---
 
-## 🔮 Planned Improvements
+## 🔮 Suggested Future Features
 
-- 🎹 On-screen piano keyboard (white + black keys)
-- 🎛 Bass clef toggle & lower note ranges
-- ♯ Sharps, flats, and key signatures
-- 🎧 Ear-training mode (sound-only)
-- 🎼 MIDI keyboard input support
-- 🧠 Spaced repetition for weak notes
+### User Experience
+- 🎓 **First-time user guidance** - Brief tutorial or tooltip overlay explaining how to use the app
+- ⌨️ **Keyboard shortcuts** - Space bar for "Next", Enter to replay note, number keys 1-7 for white keys
+- 📱 **Better mobile controls** - Larger touch targets, swipe gestures for next/previous
+- 🎯 **Settings presets** - Quick buttons like "Learn Treble Clef" or "Practice Sharps/Flats"
+- 💡 **Note name display** - Option to temporarily show the answer before moving to next
 
----
+### Visual Feedback
+- ✨ **Visual feedback on staff** - Highlight or animate the note on the staff when you click/play it
+- 🎊 **Streak celebrations** - Confetti or animation at milestone streaks (5, 10, 25, etc.)
+- 🔊 **Sound effects** - Different audio cues (chime for correct, buzz for wrong)
 
-## 🧪 Development Notes
-
-- VexFlow voices run in **SOFT mode** to avoid incomplete-measure errors
-- Audio playback uses a lightweight synth (no heavy samples yet)
-- The project favours **clarity over complexity** — no overengineering
+### Practice Features
+- 📊 **Progress tracking** - Show accuracy percentage, weak notes list, or a progress bar
+- 🎮 **Practice modes** - Time challenge mode, or focus on specific weak notes
+- 🎯 **Focused practice** - Practice mode that targets only your weakest notes
 
 ---
 
