@@ -17,6 +17,7 @@ import { ScoreBoard } from "./components/ScoreBoard";
 import { PianoKeyboard } from "./components/PianoKeyboard";
 import { SettingsPanel } from "./components/SettingsPanel";
 
+const APP_VERSION = "1.0.0";
 const SETTINGS_STORAGE_KEY = "piano_flashcards_settings_v1";
 
 function loadSettings() {
@@ -194,7 +195,10 @@ export default function App() {
     <div className="min-h-screen bg-slate-950 text-slate-100">
       <div className="mx-auto max-w-5xl px-6 py-10">
         <header className="mb-6">
-          <h1 className="text-2xl font-semibold tracking-tight">Piano Note Flashcards</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">
+            Piano Note Flashcards
+            <span className="ml-3 text-sm font-normal text-slate-400">v{APP_VERSION}</span>
+          </h1>
           <p className="mt-1 text-slate-300">
             Identify notes on the stave. Click the on-screen piano or play a MIDI keyboard. Spaced repetition will
             surface weak notes more often.
