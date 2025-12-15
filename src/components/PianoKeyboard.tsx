@@ -84,7 +84,7 @@ export function PianoKeyboard({
                   disabled={!enabled}
                   title={`${whiteKeyLabel(m, keySigPref)}${midiToOctave(m)}`}
                   className={
-                    "relative h-28 w-9 border border-slate-300/40 bg-slate-50 text-slate-900 " +
+                    "relative h-28 w-9 border border-slate-300/40 bg-slate-50 text-slate-900 rounded-b " +
                     "hover:bg-white active:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed " +
                     "sm:h-36 sm:w-12"
                   }
