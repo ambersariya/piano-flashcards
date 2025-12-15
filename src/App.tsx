@@ -12,6 +12,13 @@ import {
   weightForMidi,
 } from "./utils/noteUtils";
 import { ensureAudioStarted, playMidi } from "./utils/audio";
+import { 
+  startPitchDetection, 
+  stopPitchDetection, 
+  detectPitch, 
+  frequencyToMidi,
+  isPitchDetectionActive 
+} from "./utils/pitchDetection";
 import { StaveDisplay } from "./components/StaveDisplay";
 import { ScoreBoard } from "./components/ScoreBoard";
 import { PianoKeyboard } from "./components/PianoKeyboard";
@@ -61,7 +68,9 @@ export default function App() {
     text: "Click a key (or play MIDI) to answer." 
   });
   const [midiStatus, setMidiStatus] = useState<string>("MIDI: not connected");
+  const [pitchDetectionStatus, setPitchDetectionStatus] = useState<string>("Microphone: not connected");
   const midiCleanupRef = useRef<(() => void) | null>(null);
+  const pitchDetectionRef = useRef<number | null>(null);
 
   const midiChoices = useMemo(
     () => buildMidiRange(range.minMidi, range.maxMidi, includeAccidentals),
@@ -182,6 +191,49 @@ export default function App() {
     }
   };
 
+  const connectPitchDetection = async (): Promise<void> => {
+    if (isPitchDetectionActive()) {
+      // Stop if already active
+      stopPitchDetection();
+      if (pitchDetectionRef.current) {
+        cancelAnimationFrame(pitchDetectionRef.current);
+        pitchDetectionRef.current = null;
+      }
+      setPitchDetectionStatus("Microphone: not connected");
+      return;
+    }
+
+    try {
+      await startPitchDetection();
+      setPitchDetectionStatus("Microphone: listening...");
+
+      // Start detection loop
+      const detectLoop = () => {
+        const frequency = detectPitch();
+        if (frequency && frequency > 0) {
+          const midi = frequencyToMidi(frequency);
+          // Only submit if it's in the valid range and choices
+          if (midiChoices.includes(midi)) {
+            void submitMidi(midi);
+          }
+        }
+        pitchDetectionRef.current = requestAnimationFrame(detectLoop);
+      };
+      detectLoop();
+    } catch (error) {
+      setPitchDetectionStatus("Microphone: access denied");
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (pitchDetectionRef.current) {
+        cancelAnimationFrame(pitchDetectionRef.current);
+      }
+      stopPitchDetection();
+    };
+  }, []);
+
   useEffect(() => {
     return () => {
       midiCleanupRef.current?.();
@@ -241,7 +293,22 @@ export default function App() {
                 Connect MIDI
               </button>
 
-              <span className="text-xs text-slate-300">{midiStatus}</span>
+              <button
+                onClick={() => void connectPitchDetection()}
+                className={
+                  "rounded-xl px-4 py-2 text-sm font-semibold ring-1 " +
+                  (isPitchDetectionActive()
+                    ? "bg-emerald-500/20 text-emerald-100 ring-emerald-400/30 hover:bg-emerald-500/30"
+                    : "bg-purple-500/20 text-purple-100 ring-purple-400/30 hover:bg-purple-500/30")
+                }
+              >
+                {isPitchDetectionActive() ? "Stop Listening" : "Listen via Mic"}
+              </button>
+
+              <div className="flex flex-col gap-1 text-xs">
+                <span className="text-slate-300">{midiStatus}</span>
+                <span className="text-slate-300">{pitchDetectionStatus}</span>
+              </div>
             </div>
 
             <PianoKeyboard
