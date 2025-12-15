@@ -17,15 +17,29 @@ import { ScoreBoard } from "./components/ScoreBoard";
 import { PianoKeyboard } from "./components/PianoKeyboard";
 import { SettingsPanel } from "./components/SettingsPanel";
 
+const SETTINGS_STORAGE_KEY = "piano_flashcards_settings_v1";
+
+function loadSettings() {
+  try {
+    const raw = window.localStorage.getItem(SETTINGS_STORAGE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
 export default function App() {
-  const [rangeId, setRangeId] = useState<string>(RANGES[0].id);
+  const savedSettings = loadSettings();
+  
+  const [rangeId, setRangeId] = useState<string>(savedSettings?.rangeId ?? RANGES[0].id);
   const range = useMemo(() => RANGES.find((r) => r.id === rangeId) ?? RANGES[0], [rangeId]);
 
-  const [clef, setClef] = useState<Clef>(range.clef);
-  const [keySigId, setKeySigId] = useState<string>(KEY_SIGS[0].id);
+  const [clef, setClef] = useState<Clef>(savedSettings?.clef ?? range.clef);
+  const [keySigId, setKeySigId] = useState<string>(savedSettings?.keySigId ?? KEY_SIGS[0].id);
   const keySig = useMemo(() => KEY_SIGS.find((k) => k.id === keySigId) ?? KEY_SIGS[0], [keySigId]);
 
-  const [includeAccidentals, setIncludeAccidentals] = useState<boolean>(true);
+  const [includeAccidentals, setIncludeAccidentals] = useState<boolean>(savedSettings?.includeAccidentals ?? true);
   const [stats, setStats] = useState<StatsMap>(() => loadStats());
   const [current, setCurrent] = useState<Note>(() => {
     const midi = 60;
@@ -54,6 +68,18 @@ export default function App() {
   useEffect(() => {
     saveStats(stats);
   }, [stats]);
+
+  // Persist settings
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(
+        SETTINGS_STORAGE_KEY,
+        JSON.stringify({ rangeId, clef, keySigId, includeAccidentals })
+      );
+    } catch {
+      // ignore
+    }
+  }, [rangeId, clef, keySigId, includeAccidentals]);
 
   function pickNextNote(): Note {
     const weights = midiChoices.map((m) => weightForMidi(stats, m));
