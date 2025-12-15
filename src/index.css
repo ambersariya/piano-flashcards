@@ -2,7 +2,7 @@
 
 /* Black key responsive positioning using CSS variable */
 @media (min-width: 640px) {
-  .sm\:!left-\[calc\(\(var\(--key-index\)\+1\)\*3rem-1rem\)\] {
-    left: calc((var(--key-index) + 1) * 3rem - 1rem) !important;
+  .black-key-desktop {
+    left: calc((var(--key-index) + 1) * 3rem - 1rem);
   }
 }

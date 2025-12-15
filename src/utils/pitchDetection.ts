@@ -44,11 +44,13 @@ export function stopPitchDetection(): void {
 export function detectPitch(): number | null {
   if (!analyser || !dataArray) return null;
   
-  analyser.getFloatTimeDomainData(dataArray);
+  // Create a temporary buffer for the time domain data
+  const buffer = new Float32Array(analyser.fftSize);
+  analyser.getFloatTimeDomainData(buffer);
   
   // Autocorrelation algorithm
   const sampleRate = audioContext?.sampleRate || 44100;
-  const frequency = autoCorrelate(dataArray, sampleRate);
+  const frequency = autoCorrelate(buffer, sampleRate);
   
   return frequency;
 }

@@ -117,7 +117,7 @@ export function PianoKeyboard({
                 className={
                   `absolute top-3 h-20 w-6 rounded-b-lg bg-slate-950 text-slate-100 ring-1 ring-black/30 ` +
                   `hover:bg-slate-900 active:bg-black disabled:opacity-30 disabled:cursor-not-allowed ` +
-                  `sm:h-24 sm:w-8 sm:!left-[calc((var(--key-index)+1)*3rem-1rem)]`
+                  `sm:h-24 sm:w-8 sm:black-key-desktop`
                 }
                 {...({ style: { 
                   left: `calc((${cssIndex + 1}) * 2.25rem - 0.75rem)`,
