@@ -19,7 +19,7 @@ import { SettingsPanel } from "./components/SettingsPanel";
 
 type DifficultyLevel = "beginner" | "intermediate" | "advanced";
 
-const APP_VERSION = "1.2.0";
+const APP_VERSION = "1.2.1";
 const SETTINGS_STORAGE_KEY = "piano_flashcards_settings_v1";
 
 function loadSettings() {
