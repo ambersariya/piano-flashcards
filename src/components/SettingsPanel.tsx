@@ -38,7 +38,7 @@ export function SettingsPanel({
   onResetStats,
 }: SettingsPanelProps) {
   return (
-    <aside className="rounded-2xl bg-slate-900/60 p-5 ring-1 ring-white/10">
+    <aside className="rounded-2xl bg-slate-900/60 p-4 ring-1 ring-white/10 sm:p-5">
       <h2 className="text-base font-semibold">Settings</h2>
 
       <div className="mt-4 space-y-4">
@@ -165,6 +165,41 @@ export function SettingsPanel({
           >
             Reset stats
           </button>
+        </div>
+
+        <div className="rounded-xl bg-blue-500/10 px-3 py-3 ring-1 ring-blue-400/20">
+          <div className="text-sm font-semibold text-blue-100">💡 Memory Aids</div>
+          <div className="mt-2 space-y-2 text-xs">
+            <div>
+              <div className="font-semibold text-blue-200">Treble Clef Lines (EGBDF):</div>
+              <div className="text-blue-300/80">
+                <span className="font-semibold">E</span>very <span className="font-semibold">G</span>ood{" "}
+                <span className="font-semibold">B</span>oy <span className="font-semibold">D</span>eserves{" "}
+                <span className="font-semibold">F</span>udge
+              </div>
+            </div>
+            <div>
+              <div className="font-semibold text-blue-200">Treble Clef Spaces (FACE):</div>
+              <div className="text-blue-300/80">
+                <span className="font-semibold">F-A-C-E</span> spells FACE!
+              </div>
+            </div>
+            <div>
+              <div className="font-semibold text-blue-200">Bass Clef Lines (GBDFA):</div>
+              <div className="text-blue-300/80">
+                <span className="font-semibold">G</span>ood <span className="font-semibold">B</span>oys{" "}
+                <span className="font-semibold">D</span>o <span className="font-semibold">F</span>ine{" "}
+                <span className="font-semibold">A</span>lways
+              </div>
+            </div>
+            <div>
+              <div className="font-semibold text-blue-200">Bass Clef Spaces (ACEG):</div>
+              <div className="text-blue-300/80">
+                <span className="font-semibold">A</span>ll <span className="font-semibold">C</span>ows{" "}
+                <span className="font-semibold">E</span>at <span className="font-semibold">G</span>rass
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

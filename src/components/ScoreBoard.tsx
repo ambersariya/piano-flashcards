@@ -9,20 +9,22 @@ interface ScoreBoardProps {
 export function ScoreBoard({ score, streak, feedback }: ScoreBoardProps) {
   const pillClass =
     feedback.type === "good"
-      ? "bg-emerald-50 text-emerald-900 ring-1 ring-emerald-200"
+      ? "bg-emerald-500 text-white ring-2 ring-emerald-400 shadow-lg shadow-emerald-500/50 font-semibold text-base"
       : feedback.type === "bad"
-        ? "bg-rose-50 text-rose-900 ring-1 ring-rose-200"
-        : "bg-slate-50 text-slate-800 ring-1 ring-slate-200";
+        ? "bg-rose-500 text-white ring-2 ring-rose-400 shadow-lg shadow-rose-500/50 font-semibold text-base"
+        : "bg-slate-700 text-slate-200 ring-1 ring-slate-600";
 
   return (
-    <div className="mb-4 flex flex-wrap gap-2">
+    <div className="mb-4 flex flex-wrap items-center gap-2">
       <div className="rounded-full bg-slate-800 px-3 py-1 text-sm text-slate-200">
         Score: <span className="font-semibold">{score}</span>
       </div>
       <div className="rounded-full bg-slate-800 px-3 py-1 text-sm text-slate-200">
         Streak: <span className="font-semibold">{streak}</span>
       </div>
-      <div className={`rounded-full px-3 py-1 text-sm ${pillClass}`}>{feedback.text}</div>
+      <div className={`rounded-full px-4 py-1.5 text-sm transition-all duration-200 ${pillClass}`}>
+        {feedback.text}
+      </div>
     </div>
   );
 }

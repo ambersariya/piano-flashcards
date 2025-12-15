@@ -74,8 +74,9 @@ export function PianoKeyboard({
                   disabled={!enabled}
                   title={`${whiteKeyLabel(m, keySigPref)}${midiToOctave(m)}`}
                   className={
-                    "relative h-36 w-12 border border-slate-300/40 bg-slate-50 text-slate-900 " +
-                    "hover:bg-white active:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed"
+                    "relative h-28 w-9 border border-slate-300/40 bg-slate-50 text-slate-900 " +
+                    "hover:bg-white active:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed " +
+                    "sm:h-36 sm:w-12"
                   }
                 >
                   <div className="absolute bottom-2 left-0 right-0 text-center text-xs font-semibold">
@@ -91,21 +92,19 @@ export function PianoKeyboard({
           {blackKeys.map(({ midi, leftIndex }) => {
             const active = midi === currentNote.midi;
             const enabled = includeAccidentals && isInAnswerSet(midi);
-            // Position black key between white keys
-            const leftPx = leftIndex * 48 + 34; // 48=white key width (w-12), 34 centers black key
             return (
               <button
                 key={midi}
                 onClick={() => onKeyPress(midi)}
                 disabled={!enabled}
                 title={`${noteLabel({ midi, spelling: spellMidi(midi, keySigPref) })}`}
-                style={{ left: `${leftPx}px` }}
                 className={
-                  "absolute top-3 h-24 w-8 rounded-b-lg bg-slate-950 text-slate-100 ring-1 ring-black/30 " +
-                  "hover:bg-slate-900 active:bg-black disabled:opacity-30 disabled:cursor-not-allowed"
+                  `absolute top-3 h-20 w-6 rounded-b-lg bg-slate-950 text-slate-100 ring-1 ring-black/30 ` +
+                  `hover:bg-slate-900 active:bg-black disabled:opacity-30 disabled:cursor-not-allowed ` +
+                  `sm:h-24 sm:w-8 black-key-${leftIndex}`
                 }
               >
-                {active && showHints ? <div className="mx-auto mt-2 h-2 w-6 rounded bg-emerald-400/70" /> : null}
+                {active && showHints ? <div className="mx-auto mt-2 h-2 w-4 rounded bg-emerald-400/70 sm:w-6" /> : null}
               </button>
             );
           })}

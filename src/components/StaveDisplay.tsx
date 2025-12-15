@@ -20,11 +20,15 @@ export function StaveDisplay({ note, clef, keySig }: StaveDisplayProps) {
 
     const { Renderer, Stave, StaveNote, Voice, Formatter, Accidental } = Flow;
 
+    // Make stave responsive to container width
+    const width = Math.min(el.clientWidth || 520, 520);
+    const staveWidth = width - 40; // 20px padding on each side
+
     const renderer = new Renderer(el, Renderer.Backends.SVG);
-    renderer.resize(520, 200);
+    renderer.resize(width, 200);
     const context = renderer.getContext();
 
-    const stave = new Stave(20, 50, 480);
+    const stave = new Stave(20, 50, staveWidth);
     stave.addClef(clef);
     stave.addKeySignature(keySig.vex);
     stave.setContext(context).draw();
@@ -51,8 +55,8 @@ export function StaveDisplay({ note, clef, keySig }: StaveDisplayProps) {
   }, [note, clef, keySig]);
 
   return (
-    <div className="rounded-xl bg-white p-2">
-      <div ref={containerRef} />
+    <div className="rounded-xl bg-white p-2 overflow-hidden">
+      <div ref={containerRef} className="w-full" />
     </div>
   );
 }

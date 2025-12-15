@@ -197,21 +197,21 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
-      <div className="mx-auto max-w-5xl px-6 py-10">
-        <header className="mb-6">
-          <h1 className="text-2xl font-semibold tracking-tight">
+    <div className="min-h-screen bg-slate-950 text-slate-100 overflow-x-hidden">
+      <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
+        <header className="mb-4 sm:mb-6">
+          <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">
             Piano Note Flashcards
-            <span className="ml-3 text-sm font-normal text-slate-400">v{APP_VERSION}</span>
+            <span className="ml-2 text-xs font-normal text-slate-400 sm:ml-3 sm:text-sm">v{APP_VERSION}</span>
           </h1>
-          <p className="mt-1 text-slate-300">
+          <p className="mt-1 text-sm text-slate-300 sm:text-base">
             Identify notes on the stave. Click the on-screen piano or play a MIDI keyboard. Spaced repetition will
             surface weak notes more often.
           </p>
         </header>
 
-        <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
-          <div className="rounded-2xl bg-slate-900/60 p-5 shadow-lg ring-1 ring-white/10">
+        <div className="flex flex-col gap-4 sm:gap-6 lg:grid lg:grid-cols-[1fr_360px]">
+          <div className="rounded-2xl bg-slate-900/60 p-4 shadow-lg ring-1 ring-white/10 sm:p-5">
             <ScoreBoard score={score} streak={streak} feedback={feedback} />
 
             <StaveDisplay note={current} clef={clef} keySig={keySig} />
