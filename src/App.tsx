@@ -99,22 +99,37 @@ export default function App() {
     }
   }, [rangeId, clef, keySigId, difficulty, showHints]);
 
-  function pickNextNote(): Note {
+  function pickNextNote(avoidMidi?: number): Note {
     const weights = midiChoices.map((m) => weightForMidi(stats, m));
-    const midi = weightedPick(midiChoices, weights);
+
+    // Try to avoid immediate repeats when we have options
+    let choices = midiChoices;
+    let adjustedWeights = weights;
+    if (avoidMidi !== undefined && midiChoices.length > 1) {
+      const filtered = midiChoices
+        .map((m, idx) => ({ midi: m, weight: weights[idx] }))
+        .filter(({ midi }) => midi !== avoidMidi);
+      if (filtered.length > 0) {
+        choices = filtered.map((c) => c.midi);
+        adjustedWeights = filtered.map((c) => c.weight);
+      }
+    }
+
+    const midi = weightedPick(choices, adjustedWeights);
     return { midi, spelling: spellMidi(midi, keySig.pref) };
   }
 
   // When settings change, refresh the card
   useEffect(() => {
-    const next = pickNextNote();
+    const next = pickNextNote(current.midi);
     setCurrent(next);
     setFeedback({ type: "neutral", text: "What note is this?" });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rangeId, difficulty, keySigId]);
 
-  const next = (): void => {
-    setCurrent(pickNextNote());
+  const next = (avoidMidi?: number): void => {
+    const midiToAvoid = avoidMidi ?? current.midi;
+    setCurrent(pickNextNote(midiToAvoid));
     setFeedback({ type: "neutral", text: "What note is this?" });
   };
 
@@ -141,7 +156,7 @@ export default function App() {
       });
     }
 
-    window.setTimeout(() => next(), 700);
+    window.setTimeout(() => next(current.midi), 700);
   };
 
   const connectMidi = async (): Promise<void> => {
