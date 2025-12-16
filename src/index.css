@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+/* Match body background to app to avoid light gaps near iOS safe areas */
+html,
+body {
+  background-color: #020617; /* slate-950 */
+  min-height: 100%;
+}
+
 .piano-keyboard {
   --white-key-width: 2.5rem;
   --black-key-width: 1.65rem;
