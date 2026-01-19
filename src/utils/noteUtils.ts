@@ -35,7 +35,7 @@ const FLAT_NAMES: Record<number, PitchSpelling> = {
 };
 
 export function midiToOctave(midi: number): number {
-  // MIDI: C4=60, octave = floor(midi/12)-1
+  // C4=60, octave = floor(noteNumber/12)-1
   return Math.floor(midi / 12) - 1;
 }
 

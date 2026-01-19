@@ -1,6 +1,6 @@
 import type { Clef, KeySig, RangePreset, Note } from "../types";
 import { KEY_SIGS, RANGES } from "../utils/constants";
-import { noteLabel } from "../utils/noteUtils";
+import { noteLabel, spellMidi } from "../utils/noteUtils";
 
 type DifficultyLevel = "beginner" | "intermediate" | "advanced";
 
@@ -177,7 +177,7 @@ export function SettingsPanel({
           </button>
         </div>
 
-        <details className="rounded-xl bg-blue-500/10 px-3 py-3 ring-1 ring-blue-400/20" defaultOpen={false}>
+        <details className="rounded-xl bg-blue-500/10 px-3 py-3 ring-1 ring-blue-400/20">
           <summary className="flex cursor-pointer items-center justify-between text-sm font-semibold text-blue-100">
             💡 Memory Aids
             <span className="text-xs text-blue-200/80">Tap to view</span>
@@ -207,7 +207,11 @@ export function SettingsPanel({
         <div className="font-semibold text-slate-200">Current card</div>
         <div className="mt-1">{noteLabel(currentNote)}</div>
         <div className="mt-2 text-slate-400">
-          Range: {range.minMidi}–{range.maxMidi} (MIDI)
+          Range:{" "}
+          {noteLabel({ midi: range.minMidi, spelling: spellMidi(range.minMidi, keySig.pref) })}–{noteLabel({
+            midi: range.maxMidi,
+            spelling: spellMidi(range.maxMidi, keySig.pref),
+          })}
         </div>
       </div>
     </aside>

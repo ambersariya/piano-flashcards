@@ -20,7 +20,7 @@ export const KEY_SIGS: KeySig[] = [
 ];
 
 // --- Range presets ---
-// MIDI numbers: C4=60, E2=40
+// Note numbers: C4=60, E2=40 (matches standard MIDI note numbering)
 export const RANGES: RangePreset[] = [
   { id: "beginner_5", label: "🌱 Beginner: C4–G4 (5 notes)", clef: "treble", minMidi: 60, maxMidi: 67 },
   { id: "beginner_7", label: "🌱 Beginner+: C4–B4 (7 notes)", clef: "treble", minMidi: 60, maxMidi: 71 },

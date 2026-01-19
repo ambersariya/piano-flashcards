@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Clef, Feedback, Note, StatsMap } from "./types";
 import { KEY_SIGS, RANGES } from "./utils/constants";
 import {
@@ -12,13 +12,6 @@ import {
   weightForMidi,
 } from "./utils/noteUtils";
 import { ensureAudioStarted, playMidi } from "./utils/audio";
-import { 
-  startPitchDetection, 
-  stopPitchDetection, 
-  detectPitch, 
-  frequencyToMidi,
-  isPitchDetectionActive 
-} from "./utils/pitchDetection";
 import { StaveDisplay } from "./components/StaveDisplay";
 import { ScoreBoard } from "./components/ScoreBoard";
 import { PianoKeyboard } from "./components/PianoKeyboard";
@@ -65,12 +58,8 @@ export default function App() {
   const [streak, setStreak] = useState<number>(0);
   const [feedback, setFeedback] = useState<Feedback>({ 
     type: "neutral", 
-    text: "Click a key (or play MIDI) to answer." 
+    text: "Click a piano key to answer." 
   });
-  const [midiStatus, setMidiStatus] = useState<string>("MIDI: not connected");
-  const [pitchDetectionStatus, setPitchDetectionStatus] = useState<string>("Microphone: not connected");
-  const midiCleanupRef = useRef<(() => void) | null>(null);
-  const pitchDetectionRef = useRef<number | null>(null);
 
   const midiChoices = useMemo(
     () => buildMidiRange(range.minMidi, range.maxMidi, includeAccidentals),
@@ -159,102 +148,6 @@ export default function App() {
     window.setTimeout(() => next(current.midi), 700);
   };
 
-  const connectMidi = async (): Promise<void> => {
-    if (!navigator.requestMIDIAccess) {
-      setMidiStatus("MIDI: not supported in this browser");
-      return;
-    }
-
-    try {
-      const access = await navigator.requestMIDIAccess();
-
-      const attach = (): void => {
-        const inputs = Array.from(access.inputs.values());
-        if (inputs.length === 0) {
-          setMidiStatus("MIDI: no input device found");
-          return;
-        }
-
-        const input = inputs[0];
-        setMidiStatus(`MIDI: connected (${input.name ?? "device"})`);
-
-        const onMsg = (e: MIDIMessageEvent): void => {
-          if (!e.data) return;
-          const data = Array.from(e.data);
-          const [status, note, velocity] = data;
-          const cmd = status & 0xf0;
-          const isNoteOn = cmd === 0x90 && velocity > 0;
-          if (isNoteOn) {
-            void submitMidi(note);
-          }
-        };
-
-        input.onmidimessage = onMsg;
-
-        midiCleanupRef.current = () => {
-          input.onmidimessage = null;
-        };
-      };
-
-      // attach now
-      attach();
-
-      // respond to hot-plug
-      access.onstatechange = () => attach();
-    } catch {
-      setMidiStatus("MIDI: permission denied / unavailable");
-    }
-  };
-
-  const connectPitchDetection = async (): Promise<void> => {
-    if (isPitchDetectionActive()) {
-      // Stop if already active
-      stopPitchDetection();
-      if (pitchDetectionRef.current) {
-        cancelAnimationFrame(pitchDetectionRef.current);
-        pitchDetectionRef.current = null;
-      }
-      setPitchDetectionStatus("Microphone: not connected");
-      return;
-    }
-
-    try {
-      await startPitchDetection();
-      setPitchDetectionStatus("Microphone: listening...");
-
-      // Start detection loop
-      const detectLoop = () => {
-        const frequency = detectPitch();
-        if (frequency && frequency > 0) {
-          const midi = frequencyToMidi(frequency);
-          // Only submit if it's in the valid range and choices
-          if (midiChoices.includes(midi)) {
-            void submitMidi(midi);
-          }
-        }
-        pitchDetectionRef.current = requestAnimationFrame(detectLoop);
-      };
-      detectLoop();
-    } catch (error) {
-      setPitchDetectionStatus("Microphone: access denied");
-    }
-  };
-
-  useEffect(() => {
-    return () => {
-      if (pitchDetectionRef.current) {
-        cancelAnimationFrame(pitchDetectionRef.current);
-      }
-      stopPitchDetection();
-    };
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      midiCleanupRef.current?.();
-    };
-  }, []);
-
   const handleResetStats = (): void => {
     setStats({});
     setScore(0);
@@ -265,94 +158,72 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 overflow-x-hidden">
-      <div className="mx-auto w-full max-w-none px-4 py-6 sm:px-6 sm:py-10">
-        <header className="mb-4 sm:mb-6">
-          <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">
-            ReadNote
-            <span className="ml-2 text-xs font-normal text-slate-400 sm:ml-3 sm:text-sm">v{APP_VERSION}</span>
-          </h1>
-          <p className="mt-1 text-sm text-slate-300 sm:text-base">
-            Piano sight reading trainer. Click the piano, play MIDI, or use your microphone. Spaced repetition helps you master weak notes.
-          </p>
-        </header>
+      <div className="mx-auto w-full max-w-none px-4 py-4 sm:px-6 sm:py-6">
+        <div className="rounded-3xl bg-slate-900/70 p-4 shadow-2xl ring-1 ring-white/10 sm:p-6">
+          <header className="mb-4 sm:mb-5">
+            <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">
+              ReadNote
+              <span className="ml-2 text-xs font-normal text-slate-400 sm:ml-3 sm:text-sm">v{APP_VERSION}</span>
+            </h1>
+            <p className="mt-1 text-sm text-slate-300 sm:text-base">
+              Piano note flashcards for learning the staff. Click the on-screen piano to answer, and replay notes for ear training.
+            </p>
+          </header>
 
-        <div className="flex flex-col gap-4 sm:gap-6 lg:grid lg:grid-cols-[1fr_360px]">
-          <div className="rounded-2xl bg-slate-900/60 p-4 shadow-lg ring-1 ring-white/10 sm:p-5">
-            <ScoreBoard score={score} streak={streak} feedback={feedback} />
+          <div className="flex flex-col gap-4 sm:gap-6 lg:grid lg:grid-cols-[1fr_360px]">
+            <div className="rounded-2xl bg-slate-950/40 p-4 shadow-lg ring-1 ring-white/10 sm:p-5">
+              <ScoreBoard score={score} streak={streak} feedback={feedback} />
 
-            <StaveDisplay note={current} clef={clef} keySig={keySig} />
+              <StaveDisplay note={current} clef={clef} keySig={keySig} />
 
-            <div className="mt-4 flex flex-wrap items-center gap-3">
-              <button
-                onClick={() => next()}
-                className="rounded-xl bg-white/10 px-4 py-2 text-sm font-semibold text-slate-100 ring-1 ring-white/10 hover:bg-white/15"
-              >
-                Next
-              </button>
+              <div className="mt-3 flex flex-wrap items-center gap-3">
+                <button
+                  onClick={() => next()}
+                  className="rounded-xl bg-white/10 px-4 py-2 text-sm font-semibold text-slate-100 ring-1 ring-white/10 hover:bg-white/15"
+                >
+                  Next
+                </button>
 
-              <button
-                onClick={async () => {
-                  await ensureAudioStarted();
-                  playMidi(current.midi);
-                }}
-                className="rounded-xl bg-white/10 px-4 py-2 text-sm font-semibold text-slate-100 ring-1 ring-white/10 hover:bg-white/15"
-              >
-                Play note
-              </button>
-
-              <button
-                onClick={() => void connectMidi()}
-                className="rounded-xl bg-indigo-500/20 px-4 py-2 text-sm font-semibold text-indigo-100 ring-1 ring-indigo-400/30 hover:bg-indigo-500/30"
-              >
-                Connect MIDI
-              </button>
-
-              <button
-                onClick={() => void connectPitchDetection()}
-                className={
-                  "rounded-xl px-4 py-2 text-sm font-semibold ring-1 " +
-                  (isPitchDetectionActive()
-                    ? "bg-emerald-500/20 text-emerald-100 ring-emerald-400/30 hover:bg-emerald-500/30"
-                    : "bg-purple-500/20 text-purple-100 ring-purple-400/30 hover:bg-purple-500/30")
-                }
-              >
-                {isPitchDetectionActive() ? "Stop Listening" : "Listen via Mic"}
-              </button>
-
-              <div className="flex flex-col gap-1 text-xs">
-                <span className="text-slate-300">{midiStatus}</span>
-                <span className="text-slate-300">{pitchDetectionStatus}</span>
+                <button
+                  onClick={async () => {
+                    await ensureAudioStarted();
+                    playMidi(current.midi);
+                  }}
+                  className="rounded-xl bg-white/10 px-4 py-2 text-sm font-semibold text-slate-100 ring-1 ring-white/10 hover:bg-white/15"
+                >
+                  Play note
+                </button>
               </div>
+
+              <PianoKeyboard
+                minMidi={range.minMidi}
+                maxMidi={range.maxMidi}
+                currentNote={current}
+                includeAccidentals={includeAccidentals}
+                midiChoices={midiChoices}
+                keySigPref={keySig.pref}
+                showHints={showHints}
+                onKeyPress={(midi) => void submitMidi(midi)}
+              />
             </div>
 
-            <PianoKeyboard
-              minMidi={range.minMidi}
-              maxMidi={range.maxMidi}
-              currentNote={current}
-              includeAccidentals={includeAccidentals}
-              midiChoices={midiChoices}
-              keySigPref={keySig.pref}
+            <SettingsPanel
+              rangeId={rangeId}
+              clef={clef}
+              keySigId={keySigId}
+              difficulty={difficulty}
               showHints={showHints}
-              onKeyPress={(midi) => void submitMidi(midi)}
+              currentNote={current}
+              range={range}
+              keySig={keySig}
+              onRangeChange={setRangeId}
+              onClefChange={setClef}
+              onKeySigChange={setKeySigId}
+              onDifficultyChange={setDifficulty}
+              onShowHintsChange={setShowHints}
+              onResetStats={handleResetStats}
             />
           </div>
-
-          <SettingsPanel
-            rangeId={rangeId}
-            clef={clef}
-            keySigId={keySigId}
-            difficulty={difficulty}
-            showHints={showHints}
-            currentNote={current}
-            range={range}
-            keySig={keySig}
-            onRangeChange={setRangeId}
-            onClefChange={setClef}
-            onKeySigChange={setKeySigId}
-            onDifficultyChange={setDifficulty}
-            onShowHintsChange={setShowHints}
-            onResetStats={handleResetStats}
-          />
         </div>
       </div>
     </div>

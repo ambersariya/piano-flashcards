@@ -2,7 +2,7 @@
 
 A focused **piano sight reading trainer** built with **React, TypeScript, Tailwind CSS, Vite, VexFlow, and Tone.js**.
 
-The goal is simple: **get faster at reading notes on the staff** — visually and aurally — with a clean, distraction-free interface.
+The goal is simple: **get faster at reading notes on the staff** — with a clean, distraction-free interface and optional note playback for ear training.
 
 ---
 
@@ -11,8 +11,6 @@ The goal is simple: **get faster at reading notes on the staff** — visually an
 - 🎼 **Musical staff notation** rendered with VexFlow
 - 🎹 **Interactive piano keyboard** with touch support
 - 🔊 **Realistic piano audio** using Salamander Grand Piano samples
-- 🎤 **Microphone pitch detection** - play your real piano and the app listens
-- 🎵 **MIDI keyboard support** for external piano input
 - 🧠 **Spaced repetition algorithm** focuses on your weak notes
 - 📊 **Score and streak tracking** with persistent stats
 - 🎯 **Multiple difficulty levels** - beginner to advanced
@@ -55,9 +53,9 @@ Then open the local dev URL shown in your terminal.
 ## 🧠 How It Works
 
 1. A random note is generated within the selected range
-2. The note is rendered on a treble stave
-3. You identify the note by clicking its name
-4. The correct note is played back for ear training
+2. The note is rendered on the staff
+3. You answer by clicking the corresponding key on the piano
+4. The clicked note is played back for ear training
 5. Score and streak update automatically
 
 This is intentionally **measure-free** notation — accuracy matters, not rhythm.

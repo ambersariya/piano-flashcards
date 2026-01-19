@@ -1,7 +1,7 @@
 {
   "name": "ReadNote",
   "short_name": "ReadNote",
-  "description": "Piano sight reading trainer with interactive practice, MIDI support, and spaced repetition",
+  "description": "Piano note flashcards with interactive practice and spaced repetition",
   "start_url": "/piano-flashcards/",
   "display": "standalone",
   "background_color": "#0f172a",
