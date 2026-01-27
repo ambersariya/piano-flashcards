@@ -267,27 +267,27 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-slate-100 flex flex-col">
+    <div className="h-screen bg-zinc-950 text-zinc-100 flex flex-col overflow-hidden">
       {/* Mobile-First HUD */}
-      <div className="sticky top-0 z-20 flex items-center justify-between gap-2 bg-zinc-900/80 backdrop-blur-md px-3 py-2.5 border-b border-white/5">
+      <div className="shrink-0 flex items-center justify-between gap-2 bg-zinc-900/80 backdrop-blur-md px-3 py-2.5 border-b border-zinc-800">
         {/* Left: Title (hidden on mobile) */}
         <div className="hidden md:block">
           <h1 className="text-base font-semibold tracking-tight lg:text-lg">
             ReadNote Studio
-            <span className="ml-2 text-xs font-normal text-slate-400">v{APP_VERSION}</span>
+            <span className="ml-2 text-xs font-normal text-zinc-400">v{APP_VERSION}</span>
           </h1>
         </div>
 
         {/* Center: Stats (responsive) */}
         <div className="flex items-center gap-3 md:gap-4 flex-1 justify-center md:justify-start">
-          <div className="text-xs font-mono text-slate-300">
+          <div className="text-xs font-mono text-zinc-400">
             NPM <span className="font-semibold text-emerald-400 text-sm">{notesPerMinute.toFixed(1)}</span>
           </div>
-          <div className="text-xs font-mono text-slate-300">
+          <div className="text-xs font-mono text-zinc-400">
             ACC <span className="font-semibold text-blue-400 text-sm">{attempts === 0 ? 0 : Math.round((score / attempts) * 100)}%</span>
           </div>
           {/* Streak: Hidden on mobile, shown on md+ */}
-          <div className="hidden md:block text-xs font-mono text-slate-300">
+          <div className="hidden md:block text-xs font-mono text-zinc-400">
             STREAK <span className="font-semibold text-amber-400 text-sm">{streak}</span>
           </div>
         </div>
@@ -297,7 +297,7 @@ export default function App() {
           <MemoryAidsModal />
           <button
             onClick={() => setFeedback({ type: "neutral", text: `The note is: ${current.spelling.letter}${current.spelling.accidental}` })}
-            className="p-2 text-slate-400 hover:text-slate-200 transition-colors"
+            className="p-2 text-zinc-400 hover:text-zinc-200 transition-colors"
             title="Reveal answer"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -307,7 +307,7 @@ export default function App() {
           </button>
           <button
             onClick={handleResetStats}
-            className="p-2 text-slate-400 hover:text-rose-400 transition-colors"
+            className="p-2 text-zinc-400 hover:text-rose-400 transition-colors"
             title="Reset stats"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -339,23 +339,23 @@ export default function App() {
       </div>
 
       {/* Main Content Area - Mobile First with sticky piano */}
-      <div className="flex-1 flex flex-col md:block md:px-4 md:py-4 pb-0 md:pb-4">
-        {/* The Stage - Staff Card */}
-        <div className="flex-1 flex flex-col md:max-w-5xl md:mx-auto md:block overflow-y-auto md:overflow-visible">
-          <div className="flex-1 rounded-none md:rounded-[2rem] bg-white shadow-2xl shadow-white/5 p-3 sm:p-5 flex flex-col min-h-0">
+      <div className="flex-1 flex flex-col md:px-4 md:py-4 overflow-hidden">
+        {/* The Stage - Staff Card (Flex-1 to fill vertical space) */}
+        <div className="flex-1 flex flex-col md:max-w-5xl md:mx-auto md:w-full overflow-y-auto md:overflow-visible min-h-0">
+          <div className="flex-1 rounded-none md:rounded-xl bg-white p-2 md:p-5 flex flex-col min-h-0">
             {/* Feedback pill */}
-            <div className={`mb-3 rounded-full px-3 py-1.5 text-xs sm:text-sm text-center transition-all duration-200 ${
+            <div className={`mb-2 md:mb-3 rounded-lg px-3 py-1.5 text-xs sm:text-sm text-center transition-all duration-200 ${
               feedback.type === "good"
                 ? "bg-emerald-500 text-white ring-2 ring-emerald-400 shadow-lg shadow-emerald-500/50 font-semibold"
                 : feedback.type === "bad"
                   ? "bg-rose-500 text-white ring-2 ring-rose-400 shadow-lg shadow-rose-500/50 font-semibold"
-                  : "bg-slate-700 text-slate-200 ring-1 ring-slate-600"
+                  : "bg-zinc-800 text-zinc-200 ring-1 ring-zinc-700"
             }`}>
               {feedback.text}
             </div>
 
             {/* Musical Staff */}
-            <div className="animate-slide-in">
+            <div className="flex-1 min-h-0 animate-slide-in">
               <StaveDisplay
                 note={current}
                 clef={clef}
@@ -366,11 +366,11 @@ export default function App() {
             </div>
 
             {/* Action buttons - Hidden on mobile, shown on md+ */}
-            <div className="mt-3 hidden md:flex flex-wrap items-center gap-2">
+            <div className="mt-2 md:mt-3 hidden md:flex flex-wrap items-center gap-2">
               {!autoAdvance && (
                 <button
                   onClick={() => next()}
-                  className="rounded-xl bg-slate-900 text-slate-100 px-3 py-2 text-sm font-semibold ring-1 ring-white/10 hover:bg-slate-800 transition"
+                  className="rounded-lg bg-zinc-900 text-zinc-100 px-3 py-2 text-sm font-semibold border border-zinc-800 hover:bg-zinc-800 transition"
                 >
                   Next
                 </button>
@@ -381,15 +381,15 @@ export default function App() {
                   await ensureAudioStarted();
                   playMidi(current.midi);
                 }}
-                className="rounded-xl bg-slate-900 text-slate-100 px-3 py-2 text-sm font-semibold ring-1 ring-white/10 hover:bg-slate-800 transition"
+                className="rounded-lg bg-zinc-900 text-zinc-100 px-3 py-2 text-sm font-semibold border border-zinc-800 hover:bg-zinc-800 transition"
               >
                 Play note
               </button>
             </div>
 
-            {/* Session Summary Modal - Hidden on mobile to save space */}
+            {/* Session Summary Modal */}
             {sessionSummary ? (
-              <div className="mt-3 rounded-xl md:rounded-2xl bg-emerald-500/10 p-3 md:p-4 ring-1 ring-emerald-400/30">
+              <div className="mt-2 md:mt-3 rounded-lg bg-emerald-500/10 p-2 md:p-4 border border-emerald-400/30">
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <div className="text-xs md:text-sm font-semibold text-emerald-100">Session Summary</div>
@@ -399,21 +399,21 @@ export default function App() {
                   </div>
                   <button
                     onClick={() => setSessionSummary(null)}
-                    className="rounded-lg md:rounded-xl bg-emerald-500/20 px-3 py-1.5 md:py-2 text-xs font-semibold text-emerald-100 ring-1 ring-emerald-400/30 hover:bg-emerald-500/30"
+                    className="rounded-md bg-emerald-500/20 px-3 py-1.5 text-xs font-semibold text-emerald-100 border border-emerald-400/30 hover:bg-emerald-500/30"
                   >
                     Continue
                   </button>
                 </div>
                 <div className="mt-2 md:mt-3 grid grid-cols-3 gap-2 text-xs md:text-sm text-emerald-50">
-                  <div className="rounded-lg bg-white/5 p-2 md:p-3 ring-1 ring-white/10">
+                  <div className="rounded-md bg-white/5 p-2 md:p-3 border border-white/10">
                     <div className="text-xs text-emerald-200/80">Avg NPM</div>
                     <div className="text-base md:text-lg font-semibold">{sessionSummary.avgNpm}</div>
                   </div>
-                  <div className="rounded-lg bg-white/5 p-2 md:p-3 ring-1 ring-white/10">
+                  <div className="rounded-md bg-white/5 p-2 md:p-3 border border-white/10">
                     <div className="text-xs text-emerald-200/80">Accuracy</div>
                     <div className="text-base md:text-lg font-semibold">{sessionSummary.accuracy}%</div>
                   </div>
-                  <div className="rounded-lg bg-white/5 p-2 md:p-3 ring-1 ring-white/10">
+                  <div className="rounded-md bg-white/5 p-2 md:p-3 border border-white/10">
                     <div className="text-xs text-emerald-200/80">Attempts</div>
                     <div className="text-base md:text-lg font-semibold">{sessionSummary.attempts}</div>
                   </div>
@@ -423,8 +423,8 @@ export default function App() {
           </div>
         </div>
 
-        {/* Piano Keyboard - Sticky at bottom on mobile, relative on desktop */}
-        <div className="sticky bottom-0 md:relative md:max-w-5xl md:mx-auto md:mt-4 bg-zinc-950 md:bg-transparent z-10">
+        {/* Piano Keyboard - Shrink-0 at bottom on mobile, relative on desktop */}
+        <div className="shrink-0 md:max-w-5xl md:mx-auto md:mt-4 bg-zinc-950 md:bg-transparent">
           <PianoKeyboard
             minMidi={range.minMidi}
             maxMidi={range.maxMidi}

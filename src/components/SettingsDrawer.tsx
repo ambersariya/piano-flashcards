@@ -35,7 +35,7 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
       {/* Settings Trigger Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className="p-2 text-slate-400 hover:text-slate-200 transition-colors"
+        className="p-2 text-zinc-400 hover:text-zinc-200 transition-colors"
         title="Settings"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -48,19 +48,19 @@ export function SettingsDrawer(props: SettingsDrawerProps) {
         <>
           {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+            className="fixed inset-0 bg-zinc-950/90 backdrop-blur-md z-40"
             onClick={() => setIsOpen(false)}
           />
 
           {/* Slide-over Panel */}
           <div className="fixed inset-y-0 right-0 w-full sm:w-96 z-50 animate-slide-in-right">
-            <div className="h-full flex flex-col bg-slate-900 shadow-2xl">
+            <div className="h-full flex flex-col bg-zinc-900 border-l border-zinc-800">
               {/* Header */}
-              <div className="flex items-center justify-between px-4 py-4 border-b border-white/10">
-                <h2 className="text-lg font-semibold text-slate-100">Settings</h2>
+              <div className="flex items-center justify-between px-4 py-4 border-b border-zinc-800">
+                <h2 className="text-lg font-semibold text-zinc-100">Settings</h2>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="p-2 text-slate-400 hover:text-slate-200 transition-colors rounded-lg hover:bg-white/5"
+                  className="p-2 text-zinc-400 hover:text-zinc-200 transition-colors rounded-md hover:bg-white/5"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />

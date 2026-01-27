@@ -72,18 +72,18 @@ export function PianoKeyboard({
   const isInAnswerSet = (midi: number): boolean => midiChoices.includes(midi);
 
   return (
-    <div className="md:mt-4">
+    <div>
       {/* Header - Hidden on mobile */}
       <div className="mb-2 hidden md:flex items-center justify-between px-2">
-        <h2 className="text-sm font-semibold text-slate-200">On-screen piano</h2>
-        <div className="text-xs text-slate-400">Click a key to answer</div>
+        <h2 className="text-sm font-semibold text-zinc-200">On-screen piano</h2>
+        <div className="text-xs text-zinc-400">Click a key to answer</div>
       </div>
 
-      {/* Piano Container */}
-      <div className="relative overflow-hidden md:rounded-xl bg-transparent md:bg-slate-800/40 md:p-2 md:ring-1 md:ring-white/10">
-        <div className="piano-keyboard relative flex overflow-x-auto justify-center md:justify-start pb-safe">
+      {/* Piano Container - Full width on mobile */}
+      <div className="relative overflow-hidden md:rounded-lg bg-transparent md:bg-zinc-900 md:p-2 md:border md:border-zinc-800">
+        <div className="piano-keyboard relative flex pb-safe">
           {/* White keys */}
-          <div className="inline-flex">
+          <div className="flex flex-1">
             {whiteKeys.map((m) => {
               const active = m === currentNote.midi;
               const enabled = isInAnswerSet(m);
@@ -96,10 +96,10 @@ export function PianoKeyboard({
                   disabled={!enabled}
                   title={`${whiteKeyLabel(m, keySigPref, noteNaming)}${midiToOctave(m)}`}
                   className={
-                    "white-key relative h-40 border border-slate-300/40 bg-slate-50 text-slate-900 rounded-b " +
-                    "hover:bg-white active:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed " +
-                    "sm:h-48 md:h-44 " +
-                    (flashBad ? "key-flash-bad ring-2 ring-rose-400/80" : "")
+                    "white-key flex-1 relative h-48 border border-zinc-300/40 bg-zinc-50 text-zinc-900 rounded-b " +
+                    "hover:bg-white active:bg-zinc-100 disabled:opacity-40 disabled:cursor-not-allowed " +
+                    "md:h-44 md:flex-none " +
+                    (flashBad ? "key-flash-bad border-2 border-rose-400" : "")
                   }
                 >
                   <div className="absolute bottom-2 left-0 right-0 text-center text-xs font-semibold">
@@ -125,10 +125,10 @@ export function PianoKeyboard({
                 disabled={!enabled}
                 title={`${noteLabelWithNaming({ midi, spelling: spellMidi(midi, keySigPref) }, noteNaming)}`}
                 className={
-                  `black-key absolute top-3 h-28 rounded-b-lg bg-slate-950 text-slate-100 ring-1 ring-black/30 ` +
-                  `hover:bg-slate-900 active:bg-black disabled:opacity-30 disabled:cursor-not-allowed ` +
-                  `sm:h-32 md:h-30 ` +
-                  (flashBad ? "key-flash-bad ring-2 ring-rose-400/80" : "")
+                  `black-key absolute top-3 h-32 rounded-b-md bg-zinc-950 text-zinc-100 border border-black/30 ` +
+                  `hover:bg-zinc-900 active:bg-black disabled:opacity-30 disabled:cursor-not-allowed ` +
+                  `md:h-30 ` +
+                  (flashBad ? "key-flash-bad border-2 border-rose-400" : "")
                 }
                 style={{ "--key-index": cssIndex } as CSSProperties}
               >

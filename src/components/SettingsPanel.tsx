@@ -51,7 +51,7 @@ export function SettingsPanel({
 }: SettingsPanelProps) {
   const containerClass = inDrawer
     ? "px-4"
-    : "lg:sticky lg:top-5 flex flex-col rounded-2xl bg-slate-900/60 p-4 ring-1 ring-white/10 sm:p-5 lg:max-h-[calc(100vh-2.5rem)] lg:overflow-hidden";
+    : "lg:sticky lg:top-5 flex flex-col rounded-lg bg-zinc-900 p-4 border border-zinc-800 sm:p-5 lg:max-h-[calc(100vh-2.5rem)] lg:overflow-hidden";
 
   return (
     <aside className={containerClass}>
@@ -60,13 +60,13 @@ export function SettingsPanel({
       <div className={`${inDrawer ? '' : 'mt-4'} flex-1 space-y-3 ${inDrawer ? '' : 'overflow-y-auto pr-1 no-scrollbar lg:pr-2'}`}>
         {/* Clef - Moved to top */}
         <div className="block">
-          <div className="mb-2 text-sm font-semibold text-slate-200">Clef</div>
+          <div className="mb-2 text-sm font-semibold text-zinc-200">Clef</div>
           <div className="flex gap-2">
             <button
               onClick={() => onClefChange("treble")}
               className={
-                "flex-1 rounded-xl px-3 py-2 text-sm font-semibold ring-1 ring-white/10 transition " +
-                (clef === "treble" ? "bg-white/15" : "bg-white/5 hover:bg-white/10")
+                "flex-1 rounded-md px-3 py-2 text-sm font-semibold border transition " +
+                (clef === "treble" ? "bg-white/15 border-white/20" : "bg-white/5 border-white/10 hover:bg-white/10")
               }
             >
               Treble
@@ -74,8 +74,8 @@ export function SettingsPanel({
             <button
               onClick={() => onClefChange("bass")}
               className={
-                "flex-1 rounded-xl px-3 py-2 text-sm font-semibold ring-1 ring-white/10 transition " +
-                (clef === "bass" ? "bg-white/15" : "bg-white/5 hover:bg-white/10")
+                "flex-1 rounded-md px-3 py-2 text-sm font-semibold border transition " +
+                (clef === "bass" ? "bg-white/15 border-white/20" : "bg-white/5 border-white/10 hover:bg-white/10")
               }
             >
               Bass
@@ -85,14 +85,14 @@ export function SettingsPanel({
 
         {/* Level/Range - Compact dropdown style */}
         <div className="block">
-          <div className="mb-2 text-sm font-semibold text-slate-200">Level / Range</div>
+          <div className="mb-2 text-sm font-semibold text-zinc-200">Level / Range</div>
           <select
             value={rangeId}
             onChange={(e) => onRangeChange(e.target.value)}
-            className="w-full rounded-xl bg-white/5 px-3 py-2 text-sm font-semibold text-slate-200 ring-1 ring-white/10 hover:bg-white/10 transition cursor-pointer"
+            className="w-full rounded-md bg-white/5 px-3 py-2 text-sm font-semibold text-zinc-200 border border-white/10 hover:bg-white/10 transition cursor-pointer"
           >
             {RANGES.map((r) => (
-              <option key={r.id} value={r.id} className="bg-slate-900 text-slate-200">
+              <option key={r.id} value={r.id} className="bg-zinc-900 text-zinc-200">
                 {r.label}
               </option>
             ))}
@@ -101,13 +101,13 @@ export function SettingsPanel({
 
         {/* Difficulty Level - Compact segmented control */}
         <div className="block">
-          <div className="mb-2 text-sm font-semibold text-slate-200">Difficulty</div>
+          <div className="mb-2 text-sm font-semibold text-zinc-200">Difficulty</div>
           <div className="flex gap-2">
             <button
               onClick={() => onDifficultyChange("beginner")}
               className={
-                "flex-1 rounded-xl px-2 py-2 text-xs font-semibold ring-1 ring-white/10 transition " +
-                (difficulty === "beginner" ? "bg-white/15" : "bg-white/5 hover:bg-white/10")
+                "flex-1 rounded-md px-2 py-2 text-xs font-semibold border transition " +
+                (difficulty === "beginner" ? "bg-white/15 border-white/20" : "bg-white/5 border-white/10 hover:bg-white/10")
               }
             >
               Beginner
@@ -115,8 +115,8 @@ export function SettingsPanel({
             <button
               onClick={() => onDifficultyChange("intermediate")}
               className={
-                "flex-1 rounded-xl px-2 py-2 text-xs font-semibold ring-1 ring-white/10 transition " +
-                (difficulty === "intermediate" ? "bg-white/15" : "bg-white/5 hover:bg-white/10")
+                "flex-1 rounded-md px-2 py-2 text-xs font-semibold border transition " +
+                (difficulty === "intermediate" ? "bg-white/15 border-white/20" : "bg-white/5 border-white/10 hover:bg-white/10")
               }
             >
               Inter
@@ -124,8 +124,8 @@ export function SettingsPanel({
             <button
               onClick={() => onDifficultyChange("advanced")}
               className={
-                "flex-1 rounded-xl px-2 py-2 text-xs font-semibold ring-1 ring-white/10 transition " +
-                (difficulty === "advanced" ? "bg-white/15" : "bg-white/5 hover:bg-white/10")
+                "flex-1 rounded-md px-2 py-2 text-xs font-semibold border transition " +
+                (difficulty === "advanced" ? "bg-white/15 border-white/20" : "bg-white/5 border-white/10 hover:bg-white/10")
               }
             >
               Advanced
@@ -134,11 +134,11 @@ export function SettingsPanel({
         </div>
 
         {/* Assistance Section */}
-        <div className="block rounded-xl bg-white/5 px-3 py-3 ring-1 ring-white/10">
-          <div className="mb-3 text-sm font-semibold text-slate-200">Assistance</div>
+        <div className="block rounded-lg bg-white/5 px-3 py-3 border border-white/10">
+          <div className="mb-3 text-sm font-semibold text-zinc-200">Assistance</div>
 
           <label className="flex items-center justify-between gap-3 mb-2">
-            <div className="text-sm text-slate-200">Show Hints</div>
+            <div className="text-sm text-zinc-200">Show Hints</div>
             <input
               type="checkbox"
               checked={showHints}
@@ -148,7 +148,7 @@ export function SettingsPanel({
           </label>
 
           <label className="flex items-center justify-between gap-3 mb-2">
-            <div className="text-sm text-slate-200">Auto-Advance</div>
+            <div className="text-sm text-zinc-200">Auto-Advance</div>
             <input
               type="checkbox"
               checked={autoAdvance}
@@ -158,7 +158,7 @@ export function SettingsPanel({
           </label>
 
           <label className="flex items-center justify-between gap-3">
-            <div className="text-sm text-slate-200">Idle Help (5s)</div>
+            <div className="text-sm text-zinc-200">Idle Help (5s)</div>
             <input
               type="checkbox"
               checked={visualHint}
@@ -170,23 +170,23 @@ export function SettingsPanel({
 
         {/* Notation - Renamed from "Note naming" */}
         <div className="block">
-          <div className="mb-2 text-sm font-semibold text-slate-200">Notation</div>
+          <div className="mb-2 text-sm font-semibold text-zinc-200">Notation</div>
           <select
             value={noteNaming}
             onChange={(e) => onNoteNamingChange(e.target.value as SettingsPanelProps["noteNaming"])}
-            className="w-full rounded-xl bg-white/5 px-3 py-2 text-sm font-semibold text-slate-200 ring-1 ring-white/10 hover:bg-white/10 transition cursor-pointer"
+            className="w-full rounded-md bg-white/5 px-3 py-2 text-sm font-semibold text-zinc-200 border border-white/10 hover:bg-white/10 transition cursor-pointer"
           >
-            <option value="english" className="bg-slate-900">Scientific (C, D, E)</option>
-            <option value="solfege" className="bg-slate-900">Solfège (Do, Re, Mi)</option>
-            <option value="german" className="bg-slate-900">German (H for B)</option>
+            <option value="english" className="bg-zinc-900">Scientific (C, D, E)</option>
+            <option value="solfege" className="bg-zinc-900">Solfège (Do, Re, Mi)</option>
+            <option value="german" className="bg-zinc-900">German (H for B)</option>
           </select>
         </div>
 
         {/* Key Signature - Compact */}
-        <details className="group rounded-xl bg-slate-800/60 px-3 py-3 ring-1 ring-white/10">
-          <summary className="flex cursor-pointer items-center justify-between text-sm font-semibold text-slate-200">
+        <details className="group rounded-lg bg-zinc-800/60 px-3 py-3 border border-white/10">
+          <summary className="flex cursor-pointer items-center justify-between text-sm font-semibold text-zinc-200">
             Key Signature
-            <span className="text-xs text-slate-400">▼</span>
+            <span className="text-xs text-zinc-400">▼</span>
           </summary>
           <div className="mt-3 grid grid-cols-2 gap-2">
             {KEY_SIGS.map((k) => (
@@ -194,8 +194,8 @@ export function SettingsPanel({
                 key={k.id}
                 onClick={() => onKeySigChange(k.id)}
                 className={
-                  "rounded-xl px-3 py-2 text-left text-sm font-semibold ring-1 ring-white/10 transition " +
-                  (keySigId === k.id ? "bg-white/15 text-white" : "bg-white/5 text-slate-200 hover:bg-white/10")
+                  "rounded-md px-3 py-2 text-left text-sm font-semibold border transition " +
+                  (keySigId === k.id ? "bg-white/15 text-white border-white/20" : "bg-white/5 text-zinc-200 border-white/10 hover:bg-white/10")
                 }
               >
                 {k.label}
@@ -207,10 +207,10 @@ export function SettingsPanel({
       </div>
 
       {!inDrawer && (
-        <div className="mt-4 rounded-xl bg-slate-800/50 p-3 text-xs text-slate-300 ring-1 ring-white/10">
-          <div className="font-semibold text-slate-200">Current Exercise</div>
+        <div className="mt-4 rounded-lg bg-zinc-800/50 p-3 text-xs text-zinc-300 border border-zinc-800">
+          <div className="font-semibold text-zinc-200">Current Exercise</div>
           <div className="mt-1">{noteLabel(currentNote)}</div>
-          <div className="mt-2 text-slate-400">
+          <div className="mt-2 text-zinc-400">
             Range:{" "}
             {noteLabel({ midi: range.minMidi, spelling: spellMidi(range.minMidi, keySig.pref) })}–{noteLabel({
               midi: range.maxMidi,

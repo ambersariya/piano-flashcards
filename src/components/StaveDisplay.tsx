@@ -1,5 +1,5 @@
 import type { Clef, KeySig, Note } from "../types";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useCallback } from "react";
 import Flow from "vexflow";
 import { vexKeyForNote } from "../utils/noteUtils";
 
@@ -16,7 +16,7 @@ interface StaveDisplayProps {
 export function StaveDisplay({ note, clef, keySig, flashState = "neutral", playedMidi = null }: StaveDisplayProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
+  const renderStave = useCallback(() => {
     const el = containerRef.current;
     if (!el) return;
 
@@ -24,16 +24,22 @@ export function StaveDisplay({ note, clef, keySig, flashState = "neutral", playe
 
     const { Renderer, Stave, StaveNote, Voice, Formatter, Accidental } = Flow;
 
-    // Make stave responsive to container width
-    const width = Math.min(el.clientWidth || 640, 640);
-    const scale = 1.35; // zoom everything a bit for readability
-    const drawWidth = width / scale;
-    const height = 180; // tighter vertical box to reduce whitespace
-    const staveWidth = drawWidth - 40; // 20px padding on each side
-    const staveY = 26; // place stave closer to the top
+    // Dynamically calculate dimensions based on container
+    const containerWidth = el.clientWidth;
+    const containerHeight = el.clientHeight;
+
+    // Calculate scale based on container width
+    const scale = Math.max(Math.min(containerWidth / 300, 3.5), 1.5);
+
+    const drawWidth = containerWidth / scale;
+    // Staff only needs ~140px of height (includes clef, key sig, note, and margins)
+    const baseStaveHeight = 140;
+    const staveWidth = drawWidth - 40;
+    const staveY = 20; // Small top margin
 
     const renderer = new Renderer(el, Renderer.Backends.SVG);
-    renderer.resize(width, height * scale);
+    // SVG height is just what the staff needs, not the full container
+    renderer.resize(containerWidth, baseStaveHeight * scale);
     const context = renderer.getContext();
     context.scale(scale, scale);
     context.setFillStyle(STROKE);
@@ -61,11 +67,6 @@ export function StaveDisplay({ note, clef, keySig, flashState = "neutral", playe
     // Display ghost note (the wrong note played) in red to show error distance
     if (playedMidi !== null && playedMidi !== note.midi) {
       const wrongSpelling = { midi: playedMidi, spelling: { ...note.spelling } };
-      // Calculate the distance from correct note
-      const distance = playedMidi - note.midi;
-      const letter = note.spelling.letter;
-      const octaveShift = Math.floor(distance / 12);
-      const semitoneShift = distance % 12;
 
       // Simple ghost note - just show at the played MIDI position
       const wrongKey = vexKeyForNote(wrongSpelling);
@@ -87,18 +88,41 @@ export function StaveDisplay({ note, clef, keySig, flashState = "neutral", playe
 
     new Formatter().joinVoices([voice]).format([voice], 240);
     voice.draw(context, stave);
-  }, [note, clef, keySig]);
+  }, [note, clef, keySig, playedMidi]);
+
+  // Render on mount and when dependencies change
+  useEffect(() => {
+    renderStave();
+  }, [renderStave]);
+
+  // Add ResizeObserver to handle container size changes
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const resizeObserver = new ResizeObserver(() => {
+      renderStave();
+    });
+
+    resizeObserver.observe(el);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [renderStave]);
 
   const flashClass =
     flashState === "bad"
-      ? "animate-shake ring-2 ring-rose-400/70 shadow-[0_0_0_6px_rgba(248,113,113,0.25)]"
+      ? "animate-shake border-2 border-rose-400 shadow-lg shadow-rose-400/20"
       : flashState === "good"
-        ? "animate-pop-success ring-2 ring-emerald-300/60"
+        ? "animate-pop-success border-2 border-emerald-400"
         : "";
 
   return (
-    <div className={`rounded-xl bg-white p-2 overflow-hidden transition-all duration-150 ${flashClass}`}>
-      <div ref={containerRef} className="w-full" />
+    <div className={`h-full rounded-lg bg-white p-2 overflow-hidden transition-all duration-150 ${flashClass}`}>
+      <div className="w-full h-full flex items-center justify-center">
+        <div ref={containerRef} className="w-full scale-150 sm:scale-125 md:scale-100" style={{ transformOrigin: 'center' }} />
+      </div>
     </div>
   );
 }
