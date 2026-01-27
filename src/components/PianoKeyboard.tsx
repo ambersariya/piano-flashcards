@@ -73,15 +73,9 @@ export function PianoKeyboard({
 
   return (
     <div>
-      {/* Header - Hidden on mobile */}
-      <div className="mb-2 hidden md:flex items-center justify-between px-2">
-        <h2 className="text-sm font-semibold text-zinc-200">On-screen piano</h2>
-        <div className="text-xs text-zinc-400">Click a key to answer</div>
-      </div>
-
-      {/* Piano Container - Full width on mobile */}
-      <div className="relative overflow-hidden md:rounded-lg bg-transparent md:bg-zinc-900 md:p-2 md:border md:border-zinc-800">
-        <div className="piano-keyboard relative flex pb-safe">
+      {/* Piano Container - scrollable on mobile, fixed height */}
+      <div className="relative overflow-x-auto overflow-y-hidden md:rounded-lg bg-transparent md:bg-zinc-900 md:p-2 md:border md:border-zinc-800 h-48">
+        <div className="piano-keyboard relative flex pb-safe h-full min-w-full">
           {/* White keys */}
           <div className="flex flex-1">
             {whiteKeys.map((m) => {
@@ -96,9 +90,8 @@ export function PianoKeyboard({
                   disabled={!enabled}
                   title={`${whiteKeyLabel(m, keySigPref, noteNaming)}${midiToOctave(m)}`}
                   className={
-                    "white-key flex-1 relative h-48 border border-zinc-300/40 bg-zinc-50 text-zinc-900 rounded-b " +
+                    "white-key flex-1 relative h-full border-x border-b border-zinc-300 bg-zinc-50 text-zinc-900 " +
                     "hover:bg-white active:bg-zinc-100 disabled:opacity-40 disabled:cursor-not-allowed " +
-                    "md:h-44 md:flex-none " +
                     (flashBad ? "key-flash-bad border-2 border-rose-400" : "")
                   }
                 >
@@ -117,6 +110,8 @@ export function PianoKeyboard({
             const enabled = includeAccidentals && isInAnswerSet(midi);
             const flashBad = flashState === "bad" && flashMidi === midi;
             const showHighlight = active && (showHints || hintForced);
+            const whiteKeyCount = whiteKeys.length;
+            const leftPos = ((cssIndex + 1) / whiteKeyCount) * 100;
             
             return (
               <button
@@ -127,10 +122,16 @@ export function PianoKeyboard({
                 className={
                   `black-key absolute top-3 h-32 rounded-b-md bg-zinc-950 text-zinc-100 border border-black/30 ` +
                   `hover:bg-zinc-900 active:bg-black disabled:opacity-30 disabled:cursor-not-allowed ` +
-                  `md:h-30 ` +
+                  `pointer-events-auto z-10 ` +
                   (flashBad ? "key-flash-bad border-2 border-rose-400" : "")
                 }
-                style={{ "--key-index": cssIndex } as CSSProperties}
+                style={
+                  {
+                    left: `calc(${leftPos}% - (var(--black-key-width) / 2))`,
+                    "--black-key-width": "clamp(24px, 8%, 40px)",
+                    width: "var(--black-key-width)",
+                  } as CSSProperties
+                }
               >
                 {showHighlight ? <div className="mx-auto mt-2 h-2 w-5 rounded bg-emerald-400/70 sm:w-7" /> : null}
               </button>

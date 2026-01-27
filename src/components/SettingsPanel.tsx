@@ -50,8 +50,8 @@ export function SettingsPanel({
   inDrawer = false,
 }: SettingsPanelProps) {
   const containerClass = inDrawer
-    ? "px-4"
-    : "lg:sticky lg:top-5 flex flex-col rounded-lg bg-zinc-900 p-4 border border-zinc-800 sm:p-5 lg:max-h-[calc(100vh-2.5rem)] lg:overflow-hidden";
+    ? "px-4 text-zinc-100"
+    : "lg:sticky lg:top-5 flex flex-col rounded-lg bg-zinc-900 p-4 border border-zinc-800 sm:p-5 lg:max-h-[calc(100vh-2.5rem)] lg:overflow-hidden text-zinc-100";
 
   return (
     <aside className={containerClass}>
