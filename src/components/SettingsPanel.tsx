@@ -18,7 +18,6 @@ interface SettingsPanelProps {
   onKeySigChange: (keySigId: string) => void;
   onDifficultyChange: (difficulty: DifficultyLevel) => void;
   onShowHintsChange: (show: boolean) => void;
-  onResetStats: () => void;
 }
 
 export function SettingsPanel({
@@ -35,7 +34,6 @@ export function SettingsPanel({
   onKeySigChange,
   onDifficultyChange,
   onShowHintsChange,
-  onResetStats,
 }: SettingsPanelProps) {
   return (
     <aside className="lg:sticky lg:top-5 flex flex-col rounded-2xl bg-slate-900/60 p-4 ring-1 ring-white/10 sm:p-5 lg:max-h-[calc(100vh-2.5rem)] lg:overflow-hidden">
@@ -163,44 +161,6 @@ export function SettingsPanel({
           </div>
         </details>
 
-        <div className="rounded-xl bg-white/5 px-3 py-3 ring-1 ring-white/10">
-          <div className="text-sm font-semibold text-slate-200">Spaced repetition</div>
-          <div className="mt-1 text-xs text-slate-400">
-            Weak notes are picked more often based on your recent accuracy. Stats are stored locally in your browser.
-          </div>
-
-          <button
-            onClick={onResetStats}
-            className="mt-3 w-full rounded-xl bg-rose-500/20 px-3 py-2 text-sm font-semibold text-rose-100 ring-1 ring-rose-400/30 hover:bg-rose-500/30"
-          >
-            Reset stats
-          </button>
-        </div>
-
-        <details className="rounded-xl bg-blue-500/10 px-3 py-3 ring-1 ring-blue-400/20">
-          <summary className="flex cursor-pointer items-center justify-between text-sm font-semibold text-blue-100">
-            💡 Memory Aids
-            <span className="text-xs text-blue-200/80">Tap to view</span>
-          </summary>
-          <div className="mt-3 grid grid-cols-1 gap-3 text-xs sm:grid-cols-2">
-            <div className="rounded-lg bg-blue-900/30 p-2 ring-1 ring-blue-400/20">
-              <div className="font-semibold text-blue-200">Treble lines (EGBDF)</div>
-              <div className="text-blue-300/80">Every Good Boy Deserves Fruit</div>
-            </div>
-            <div className="rounded-lg bg-blue-900/30 p-2 ring-1 ring-blue-400/20">
-              <div className="font-semibold text-blue-200">Treble spaces (FACE)</div>
-              <div className="text-blue-300/80">FACE spells FACE</div>
-            </div>
-            <div className="rounded-lg bg-blue-900/30 p-2 ring-1 ring-blue-400/20">
-              <div className="font-semibold text-blue-200">Bass lines (GBDFA)</div>
-              <div className="text-blue-300/80">Good Burritos Don't Fall Apart</div>
-            </div>
-            <div className="rounded-lg bg-blue-900/30 p-2 ring-1 ring-blue-400/20">
-              <div className="font-semibold text-blue-200">Bass spaces (ACEG)</div>
-              <div className="text-blue-300/80">All Cows Eat Grass</div>
-            </div>
-          </div>
-        </details>
       </div>
 
       <div className="mt-4 rounded-xl bg-slate-800/50 p-3 text-xs text-slate-300 ring-1 ring-white/10">

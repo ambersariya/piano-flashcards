@@ -205,6 +205,44 @@ export default function App() {
                 showHints={showHints}
                 onKeyPress={(midi) => void submitMidi(midi)}
               />
+
+              <div className="mt-4 space-y-4 rounded-2xl bg-slate-900/50 p-4 ring-1 ring-white/10">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <div className="text-sm font-semibold text-slate-100">Memory aids</div>
+                    <div className="text-xs text-slate-400">Quick mnemonics for both clefs.</div>
+                  </div>
+                  <button
+                    onClick={handleResetStats}
+                    className="rounded-xl bg-rose-500/20 px-3 py-2 text-sm font-semibold text-rose-100 ring-1 ring-rose-400/30 transition hover:bg-rose-500/30"
+                  >
+                    Reset stats
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 gap-3 text-xs sm:grid-cols-2">
+                  <div className="rounded-lg bg-blue-500/10 p-3 ring-1 ring-blue-400/20">
+                    <div className="font-semibold text-blue-100">Treble lines (EGBDF)</div>
+                    <div className="text-blue-200/80">Every Good Boy Deserves Fruit</div>
+                  </div>
+                  <div className="rounded-lg bg-blue-500/10 p-3 ring-1 ring-blue-400/20">
+                    <div className="font-semibold text-blue-100">Treble spaces (FACE)</div>
+                    <div className="text-blue-200/80">FACE spells FACE</div>
+                  </div>
+                  <div className="rounded-lg bg-blue-500/10 p-3 ring-1 ring-blue-400/20">
+                    <div className="font-semibold text-blue-100">Bass lines (GBDFA)</div>
+                    <div className="text-blue-200/80">Good Burritos Don't Fall Apart</div>
+                  </div>
+                  <div className="rounded-lg bg-blue-500/10 p-3 ring-1 ring-blue-400/20">
+                    <div className="font-semibold text-blue-100">Bass spaces (ACEG)</div>
+                    <div className="text-blue-200/80">All Cows Eat Grass</div>
+                  </div>
+                </div>
+
+                <div className="rounded-lg bg-white/5 px-3 py-2 text-xs text-slate-300 ring-1 ring-white/10">
+                  Weak notes are selected more often based on recent accuracy. Stats are stored locally in your browser.
+                </div>
+              </div>
             </div>
 
             <SettingsPanel
@@ -221,7 +259,6 @@ export default function App() {
               onKeySigChange={setKeySigId}
               onDifficultyChange={setDifficulty}
               onShowHintsChange={setShowHints}
-              onResetStats={handleResetStats}
             />
           </div>
         </div>

@@ -24,10 +24,11 @@ export function StaveDisplay({ note, clef, keySig }: StaveDisplayProps) {
 
     // Make stave responsive to container width
     const width = Math.min(el.clientWidth || 640, 640);
-    const scale = 2.00; // zoom everything a bit for readability
+    const scale = 1.35; // zoom everything a bit for readability
     const drawWidth = width / scale;
-    const height = 240;
+    const height = 180; // tighter vertical box to reduce whitespace
     const staveWidth = drawWidth - 40; // 20px padding on each side
+    const staveY = 26; // place stave closer to the top
 
     const renderer = new Renderer(el, Renderer.Backends.SVG);
     renderer.resize(width, height * scale);
@@ -36,7 +37,7 @@ export function StaveDisplay({ note, clef, keySig }: StaveDisplayProps) {
     context.setFillStyle(STROKE);
     context.setStrokeStyle(STROKE);
 
-    const stave = new Stave(20, 60, staveWidth);
+    const stave = new Stave(20, staveY, staveWidth);
     stave.addClef(clef);
     stave.addKeySignature(keySig.vex);
     stave.setContext(context).draw();
