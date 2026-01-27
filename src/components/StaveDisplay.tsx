@@ -3,6 +3,8 @@ import { useRef, useEffect } from "react";
 import Flow from "vexflow";
 import { vexKeyForNote } from "../utils/noteUtils";
 
+const STROKE = "#0f172a"; // dark stroke for visibility on light card
+
 interface StaveDisplayProps {
   note: Note;
   clef: Clef;
@@ -21,12 +23,18 @@ export function StaveDisplay({ note, clef, keySig }: StaveDisplayProps) {
     const { Renderer, Stave, StaveNote, Voice, Formatter, Accidental } = Flow;
 
     // Make stave responsive to container width
-    const width = Math.min(el.clientWidth || 600, 600);
-    const staveWidth = width - 40; // 20px padding on each side
+    const width = Math.min(el.clientWidth || 640, 640);
+    const scale = 2.00; // zoom everything a bit for readability
+    const drawWidth = width / scale;
+    const height = 240;
+    const staveWidth = drawWidth - 40; // 20px padding on each side
 
     const renderer = new Renderer(el, Renderer.Backends.SVG);
-    renderer.resize(width, 240);
+    renderer.resize(width, height * scale);
     const context = renderer.getContext();
+    context.scale(scale, scale);
+    context.setFillStyle(STROKE);
+    context.setStrokeStyle(STROKE);
 
     const stave = new Stave(20, 60, staveWidth);
     stave.addClef(clef);
@@ -38,7 +46,7 @@ export function StaveDisplay({ note, clef, keySig }: StaveDisplayProps) {
       clef,
       keys,
       duration: "q",
-    });
+    }).setStyle({ strokeStyle: STROKE, fillStyle: STROKE });
 
     // If our key string includes an accidental, add it explicitly so it's always shown.
     if (note.spelling.accidental === "#" || note.spelling.accidental === "b") {
