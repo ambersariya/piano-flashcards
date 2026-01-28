@@ -1,3 +1,5 @@
+"use client";
+
 import type { AccidentalPref, Note } from "../types";
 import { useMemo, type CSSProperties } from "react";
 import { isBlackKey, whiteKeyLabel, midiToOctave, noteLabelWithNaming, spellMidi, type NoteNaming } from "../utils/noteUtils";

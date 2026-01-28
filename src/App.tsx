@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Clef, Feedback, Note, StatsMap } from "./types";
 import { KEY_SIGS, RANGES } from "./utils/constants";
