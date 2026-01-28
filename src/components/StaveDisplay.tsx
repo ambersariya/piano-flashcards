@@ -140,7 +140,7 @@ export function StaveDisplay({ note, clef, keySig, flashState = "neutral", playe
     <div className={`h-full rounded-lg bg-white p-2 overflow-hidden transition-all duration-150 ${flashClass}`}>
       <div className="w-full h-full flex items-center justify-center">
         <div className="w-full flex items-center justify-center px-4">
-          <div ref={containerRef} className="w-full max-w-md scale-125 sm:scale-110 md:scale-100" style={{ transformOrigin: "center" }} />
+          <div ref={containerRef} className="w-full max-w-md" style={{ transformOrigin: "center" }} />
         </div>
       </div>
     </div>
