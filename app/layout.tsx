@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import "../src/index.css";
+import "../src/app/globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://readnote.app"),
