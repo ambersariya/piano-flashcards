@@ -269,7 +269,7 @@ export default function App() {
   return (
     <div className="h-screen bg-zinc-950 text-zinc-100 flex flex-col overflow-hidden">
       {/* Mobile-First HUD */}
-      <div className="shrink-0 flex items-center justify-between gap-2 bg-zinc-900/80 backdrop-blur-md px-3 py-2.5 border-b border-zinc-800">
+      <div className="relative shrink-0 flex items-center justify-between gap-2 bg-zinc-900/80 backdrop-blur-md px-3 py-2.5 border-b border-zinc-800">
         {/* Left: Title (hidden on mobile) */}
         <div className="hidden md:block">
           <h1 className="text-base font-semibold tracking-tight lg:text-lg">
@@ -278,16 +278,16 @@ export default function App() {
           </h1>
         </div>
 
-        {/* Center: Stats (responsive) */}
-        <div className="flex items-center gap-3 md:gap-4 flex-1 justify-center md:justify-start">
-          <div className="text-xs font-mono text-zinc-400">
+        {/* Center: Stats (locked to center) */}
+        <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-4 md:gap-6 px-3 py-1 rounded-md">
+          <div className="text-xs font-mono text-zinc-400 whitespace-nowrap">
             NPM <span className="font-semibold text-emerald-400 text-sm">{notesPerMinute.toFixed(1)}</span>
           </div>
-          <div className="text-xs font-mono text-zinc-400">
+          <div className="text-xs font-mono text-zinc-400 whitespace-nowrap">
             ACC <span className="font-semibold text-blue-400 text-sm">{attempts === 0 ? 0 : Math.round((score / attempts) * 100)}%</span>
           </div>
           {/* Streak: Hidden on mobile, shown on md+ */}
-          <div className="hidden md:block text-xs font-mono text-zinc-400">
+          <div className="hidden md:block text-xs font-mono text-zinc-400 whitespace-nowrap">
             STREAK <span className="font-semibold text-amber-400 text-sm">{streak}</span>
           </div>
         </div>
